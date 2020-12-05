@@ -1,0 +1,1 @@
+java -jar RomMangler.jar split sfzch_split.cfg sfzch_hack.bin
