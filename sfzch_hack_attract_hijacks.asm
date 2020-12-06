@@ -1,7 +1,7 @@
 hijack_attract_04:
 	move.w  ($4,A5), D0
-	move.w  ($6,PC,D0.w), D1
-	jmp     ($2,PC,D1.w)
+	move.w  (jtl_hijack_attract_04,PC,D0.w), D1
+	jmp     (jtl_hijack_attract_04,PC,D1.w)
 
 jtl_hijack_attract_04:
 	dc.w	hijack_attract_04_00-jtl_hijack_attract_04
