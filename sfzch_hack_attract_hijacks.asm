@@ -114,4 +114,5 @@ qsound_logo:
  incbin "scroll2_qsoundlogo.bin"
  
 qsound_logo_palette:
- incbin "palette_qsoundlogo.bin"
+; incbin "palette_qsoundlogo.bin"
+ incbin "palette_qsoundlogo_dark.bin"
