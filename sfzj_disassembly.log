@@ -66,52 +66,70 @@
 000AE4  lea     ($48a,PC) ; ($f70), A2
 000AE8  lea     ($6,PC) ; ($af0), A5
 000AEC  bra     $d8a
+
 000AF0  lea     $920000.l, A0
 000AF6  lea     (A0), A1
 000AF8  adda.l  #$fffe, A1
 000AFE  lea     ($478,PC) ; ($f78), A2
 000B02  lea     ($6,PC) ; ($b0a), A6
 000B06  bra     $d18
+
 000B0A  lea     ($476,PC) ; ($f82), A2
 000B0E  lea     ($6,PC) ; ($b16), A5
 000B12  bra     $d8a
+
 000B16  lea     ($474,PC) ; ($f8c), A2
 000B1A  lea     ($6,PC) ; ($b22), A5
 000B1E  bra     $d8a
+
 000B22  lea     $708000.l, A0
 000B28  lea     (A0), A1
 000B2A  adda.l  #$1ffe, A1
+
 000B30  lea     ($464,PC) ; ($f96), A2
 000B34  lea     ($6,PC) ; ($b3c), A6
 000B38  bra     $d18
+
 000B3C  lea     ($462,PC) ; ($fa0), A2
 000B40  lea     ($6,PC) ; ($b48), A5
 000B44  bra     $d8a
+
 000B48  move.w  #$f08, $804040.l
 000B50  lea     ($458,PC) ; ($faa), A2
 000B54  lea     ($6,PC) ; ($b5c), A5
 000B58  bra     $d8a
+
 000B5C  cmpi.l  #$5642194, D0
 000B62  cmpi.b  #$77, $619fff.l
 000B6A  bne     $b5c
+
+; Test qsound
 000B6C  lea     $618000.l, A0
 000B72  lea     ($1ffe,A0), A1
 000B76  lea     ($43d,PC) ; ($fb5), A2
 000B7A  lea     ($6,PC) ; ($b82), A6
 000B7E  bra     $d42
+; Test qsound
+
 000B82  lea     ($43b,PC) ; ($fbf), A2
 000B86  lea     ($6,PC) ; ($b8e), A5
 000B8A  bra     $d8a
+
 000B8E  lea     ($6,PC) ; ($b96), A4
 000B92  bra     $dc0
+
 000B96  lea     ($6,PC) ; ($b9e), A4
 000B9A  bra     $df0
+
 000B9E  lea     ($6,PC) ; ($ba6), A4
 000BA2  bra     $e04
+
 000BA6  lea     ($6,PC) ; ($bae), A4
 000BAA  bra     $e26
+
 000BAE  lea     ($6,PC) ; ($bb6), A4
 000BB2  bra     $e66
+
 000BB6  cmpi.l  #$5642194, D0
 000BBC  moveq   #$0, D0
 000BBE  lea     $ff8000.l, A5
@@ -187,21 +205,28 @@
 000D3A  addq.w  #4, D3
 000D3C  dbra    D1, $d20
 000D40  jmp     (A6)
+
+; Memory check
 000D42  movea.l A0, A3
 000D44  move.w  #$1, D1
 000D48  moveq   #$0, D3
+
 000D4A  move.w  ($3a,PC,D3.w), D0
 000D4E  lea     (A3), A0
 000D50  cmpi.l  #$5642194, D0
 000D56  move.w  D0, (A0)
 000D58  cmp.b   ($1,A0), D0
 000D5C  bne     $d6e
+
 000D5E  lea     ($2,A0), A0
 000D62  cmpa.l  A1, A0
 000D64  bls     $d50
+
 000D66  addq.w  #2, D3
 000D68  dbra    D1, $d4a
 000D6C  jmp     (A6)
+; Memory check
+
 000D8A  lea     (A2), A0
 000D8C  moveq   #$0, D0
 000D8E  move.b  (A0)+, D0
@@ -221,6 +246,7 @@
 000DB8  lea     ($80,A1), A1
 000DBC  bra     $da2
 000DBE  jmp     (A5)
+
 000DC0  lea     $ff0000.l, A0
 000DC6  move.w  #$1fff, D4
 000DCA  moveq   #$0, D0
@@ -249,6 +275,7 @@
 000E20  cmpa.l  A1, A0
 000E22  bls     $e16
 000E24  jmp     (A4)
+
 000E26  moveq   #$0, D0
 000E28  move.w  #$0, $8040e0.l
 000E30  lea     $708000.l, A0
@@ -263,6 +290,8 @@
 000E5E  move.l  D0, (A0)+
 000E60  dbra    D7, $e58
 000E64  jmp     (A4)
+
+; Clear qsound ram to $FFFF
 000E66  lea     $618000.l, A0
 000E6C  lea     $619ff9.l, A1
 000E72  moveq   #-$1, D0
@@ -270,7 +299,10 @@
 000E7A  move.w  D0, (A0)+
 000E7C  cmpa.l  A1, A0
 000E7E  bls     $e74
+
 000E80  jmp     (A4)
+; Clear qsound ram to $FFFF
+
 000E82  movea.l #$1ee0a0, A0
 000E88  lea     $914400.l, A1
 000E8E  lea     ($6,PC) ; ($e96), A2

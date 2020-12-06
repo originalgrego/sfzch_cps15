@@ -67,29 +67,38 @@
 000A82  lea     ($3d8,PC) ; ($e5c), A2
 000A86  lea     ($6,PC) ; ($a8e), A6
 000A8A  bra     $c3e
+
 000A8E  lea     ($3d6,PC) ; ($e66), A2
 000A92  lea     ($6,PC) ; ($a9a), A5
 000A96  bra     $cb0
+
 000A9A  lea     ($3d4,PC) ; ($e70), A2
 000A9E  lea     ($6,PC) ; ($aa6), A5
 000AA2  bra     $cb0
+
 000AA6  lea     $920000.l, A0
 000AAC  lea     (A0), A1
 000AAE  adda.l  #$fffe, A1
 000AB4  lea     ($3c2,PC) ; ($e78), A2
 000AB8  lea     ($6,PC) ; ($ac0), A6
 000ABC  bra     $c3e
+
 000AC0  lea     ($3c0,PC) ; ($e82), A2
 000AC4  lea     ($6,PC) ; ($acc), A5
 000AC8  bra     $cb0
+
 000ACC  lea     ($6,PC) ; ($ad4), A4
 000AD0  bra     $ce6
+
 000AD4  lea     ($6,PC) ; ($adc), A4
 000AD8  bra     $d16
+
 000ADC  lea     ($6,PC) ; ($ae4), A4
 000AE0  bra     $d2a
+
 000AE4  lea     ($6,PC) ; ($aec), A4
 000AE8  bra     $d4c
+
 000AEC  cmpi.l  #$5642194, D0
 000AF2  moveq   #$0, D0
 000AF4  lea     $ff8000.l, A5
@@ -150,9 +159,12 @@
 000C2E  move.l  D0, ($64,A5)
 000C32  cmpi.l  #$5642194, D0
 000C38  jmp     $eca.l
+
+; Memory check
 000C3E  movea.l A0, A3
 000C40  move.w  #$1, D1
 000C44  moveq   #$0, D3
+
 000C46  move.l  ($5c,PC,D3.w), D0
 000C4A  lea     (A3), A0
 000C4C  cmpi.l  #$5642194, D0
@@ -160,12 +172,16 @@
 000C54  move.l  D0, (A0)
 000C56  cmp.l   (A0), D0
 000C58  bne     $c94
+
 000C5A  move.l  D2, (A0)+
 000C5C  cmpa.l  A1, A0
 000C5E  bls     $c4c
+
 000C60  addq.w  #4, D3
 000C62  dbra    D1, $c46
 000C66  jmp     (A6)
+; Memory check
+
 000CB0  lea     (A2), A0
 000CB2  moveq   #$0, D0
 000CB4  move.b  (A0)+, D0
