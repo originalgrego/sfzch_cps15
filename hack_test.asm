@@ -1,5 +1,7 @@
  org  0
    incbin  "build\sfzch.bin"
+ 
+ include "sfzch_hack_attract.asm"
 
 qsound_fifo_offset = $7000
 qsound_fifo_head_offset = $6000
@@ -22,6 +24,8 @@ qsound_fifo_tail_offset = $6010
 
 ; Free space
  org $149A50
+ 
+ include "sfzch_hack_attract_hijacks.asm"
 
 ;----------------
 Do_Qsound_Test:
