@@ -76,12 +76,14 @@
 000A9E  lea     ($6,PC) ; ($aa6), A5
 000AA2  bra     $cb0
 
+; End of CPS1 RAM OK TEST
 000AA6  lea     $920000.l, A0
 000AAC  lea     (A0), A1
 000AAE  adda.l  #$fffe, A1
 000AB4  lea     ($3c2,PC) ; ($e78), A2
 000AB8  lea     ($6,PC) ; ($ac0), A6
 000ABC  bra     $c3e
+; End of CPS1 RAM OK TEST
 
 000AC0  lea     ($3c0,PC) ; ($e82), A2
 000AC4  lea     ($6,PC) ; ($acc), A5
@@ -167,6 +169,7 @@
 
 000C46  move.l  ($5c,PC,D3.w), D0
 000C4A  lea     (A3), A0
+
 000C4C  cmpi.l  #$5642194, D0
 000C52  move.l  (A0), D2
 000C54  move.l  D0, (A0)
@@ -201,6 +204,7 @@
 000CDE  lea     ($80,A1), A1
 000CE2  bra     $cc8
 000CE4  jmp     (A5)
+
 000CE6  lea     $ff0000.l, A0
 000CEC  move.w  #$1fff, D4
 000CF0  moveq   #$0, D0
@@ -209,6 +213,7 @@
 000CFA  move.l  D0, (A0)+
 000CFC  dbra    D4, $cf2
 000D00  jmp     (A4)
+
 000D02  lea     $908000.l, A0
 000D08  lea     $90bfff.l, A1
 000D0E  move.w  #$20, D0
@@ -288,6 +293,8 @@
 000E14  or.l    D0, (A1)+
 000E16  dbra    D7, $df0
 000E1A  jmp     (A2)
+
+; More init
 000ECA  lea     $ff8000.l, A7
 000ED0  lea     $ff8000.l, A5
 000ED6  moveq   #$0, D0
@@ -5011,6 +5018,7 @@
 01137E  rts
 ; Put audio commands in fifo 
 
+; Initialize audio fifo
 011380  moveq   #$1f, D6
 011382  lea     (-$59e6,A5), A0
 011386  moveq   #$0, D0
@@ -5021,6 +5029,8 @@
 011390  dbra    D6, $11388
 011394  move.l  D0, (-$49e6,A5)
 011398  rts
+; Initialize audio fifo
+
 01139A  bsr     $11450
 01139E  move.w  #$f000, D1
 0113A2  bra     $11440

@@ -189,6 +189,8 @@
 000D08  move.w  D0, ($2f64,A5)
 000D0C  cmpi.l  #$5642194, D0
 000D12  jmp     $fca.l
+
+; Memory check
 000D18  movea.l A0, A3
 000D1A  move.w  #$1, D1
 000D1E  moveq   #$0, D3
@@ -205,14 +207,16 @@
 000D3A  addq.w  #4, D3
 000D3C  dbra    D1, $d20
 000D40  jmp     (A6)
-
 ; Memory check
+
+; Qsound Memory check
 000D42  movea.l A0, A3
 000D44  move.w  #$1, D1
 000D48  moveq   #$0, D3
 
 000D4A  move.w  ($3a,PC,D3.w), D0
 000D4E  lea     (A3), A0
+
 000D50  cmpi.l  #$5642194, D0
 000D56  move.w  D0, (A0)
 000D58  cmp.b   ($1,A0), D0
@@ -225,7 +229,7 @@
 000D66  addq.w  #2, D3
 000D68  dbra    D1, $d4a
 000D6C  jmp     (A6)
-; Memory check
+; Qsound Memory check
 
 000D8A  lea     (A2), A0
 000D8C  moveq   #$0, D0
@@ -345,6 +349,8 @@
 000F14  or.l    D0, (A1)+
 000F16  dbra    D7, $ef0
 000F1A  jmp     (A2)
+
+; More init
 000FCA  lea     $ff8000.l, A7
 000FD0  lea     $ff8000.l, A5
 000FD6  moveq   #$0, D0
@@ -385,10 +391,12 @@
 001068  dbra    D7, $105a
 00106C  cmpi.l  #$5642194, D0
 001072  jsr     $def0.l
+
 001078  move.w  #$0, ($190,A5)
 00107E  move.b  #$88, $619ffb.l
 001086  move.b  #$0, $619ffd.l
 00108E  move.b  #$ff, $619fff.l
+
 001096  cmpi.l  #$5642194, D0
 00109C  moveq   #$0, D0
 00109E  move.b  D0, ($188,A5)
@@ -2866,6 +2874,7 @@
 00B2E6  dbra    D7, $b2e0
 00B2EA  bsr     $b6fc
 00B2EE  bra     $b308
+
 00B308  cmpi.l  #$5642194, D0
 00B30E  moveq   #$0, D0
 00B310  move.b  D0, ($198,A5)
@@ -2876,10 +2885,13 @@
 00B322  move.b  D0, ($197,A5)
 00B326  cmpi.b  #$12, D0
 00B32A  beq     $b338
+
 00B32C  cmpi.b  #$11, D0
 00B330  beq     $b34a
+
 00B332  bsr     $bc94
 00B336  bra     $b360
+
 00B360  move.b  ($1,A4), ($198,A5)
 00B366  move.b  ($2,A4), ($196,A5)
 00B36C  move.b  ($3,A4), ($199,A5)
@@ -5376,7 +5388,7 @@
 012B5A  cmpi.b  #-$1, $61801f.l
 012B62  bne     $12be0
 
-012B64  lea     (-$59c2,A5), A4
+012B64  lea     (-$59c2,A5), A4 ; Load fifo location
 012B68  move.w  (-$49c0,A5), D0 ; Load fifo index
 012B6C  move.b  (A4,D0.w), $618007.l
 012B74  move.b  ($1,A4,D0.w), $618009.l
@@ -5393,7 +5405,7 @@
 012BCC  move.b  #$0, $61801f.l
 012BD4  addi.w  #$10, D0
 012BD8  andi.w  #$ff0, D0
-012BDC  move.w  D0, (-$49c0,A5)
+012BDC  move.w  D0, (-$49c0,A5) ; Update fifo head
 012BE0  rts
 ; Upload audio commands
 
@@ -5401,27 +5413,33 @@
 012BE2  tst.b   ($199,A5)
 012BE6  bne     $12bee
 
-012BEE  lea     (-$59c2,A5), A4
-012BF2  move.w  (-$49c2,A5), D0
+012BE8  tst.b   ($181,A5)
+012BEC  bne     $12c0e ; Exit
+
+012BEE  lea     (-$59c2,A5), A4 ; Load fifo address
+012BF2  move.w  (-$49c2,A5), D0 ; Fifo tail
 012BF6  move.l  D1, (A4,D0.w)
 012BFA  move.l  D2, ($4,A4,D0.w)
 012BFE  move.l  D3, ($8,A4,D0.w)
 012C02  addi.w  #$10, D0
 012C06  andi.w  #$ff0, D0
-012C0A  move.w  D0, (-$49c2,A5)
+012C0A  move.w  D0, (-$49c2,A5) ; Udate Fifo tail
 012C0E  rts
 ; Put audio commands in fifo 
 
+; Initialize qsound fifo
 012C10  move.w  #$ff, D6
-012C14  lea     (-$59c2,A5), A0
+012C14  lea     (-$59c2,A5), A0 ; Fifo address
 012C18  moveq   #$0, D0
 012C1A  move.l  D0, (A0)+
 012C1C  move.l  D0, (A0)+
 012C1E  move.l  D0, (A0)+
 012C20  move.l  D0, (A0)+
 012C22  dbra    D6, $12c1a
-012C26  move.l  D0, (-$49c2,A5)
+012C26  move.l  D0, (-$49c2,A5) ; Clear fifo tail
 012C2A  rts
+; Initialize qsound fifo
+
 012C2C  bsr     $12d0e
 012C30  move.l  #$ff00, D1
 012C36  bra     $12cfe
