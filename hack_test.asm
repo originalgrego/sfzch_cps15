@@ -21,6 +21,10 @@ qsound_fifo_tail_offset = $6010
 
  org $011350
 	jmp Hijack_Add_Audio_Command_To_Fifo
+	
+; service mode test
+; org $179A
+;	NOP
 
 ; Free space
  org $149A50
@@ -63,6 +67,8 @@ Clear_Qsound_Ram_Loop:
 	move.w  D0, (A0)+
 	cmpa.l  A1, A0
 	bls     Clear_Qsound_Ram_Loop
+
+	jsr		draw_qsound_ramok
 
 	lea     $ac0, A6
 	jmp     (A6)
@@ -179,3 +185,32 @@ Hijack_Add_Audio_Command_To_Fifo_Exit:
 tbl_sound_mappings:
 	incbin "sound_mappings.bin"
 
+draw_qsound_ramok:
+	movea.l		#$9088D0, A1
+	movea.l		#$EAD, A0
+	moveq		#0, D0
+;	moveq		#0, D1
+	move.b		#6, D0
+	
+draw_qsound_ramok_loop:
+	move.b		(A0)+, D1
+;	andi.b		#$FF, D1
+	move.b		D1, ($1,A1)
+	lea			($80,A1), A1
+	dbf			D0, draw_qsound_ramok_loop
+	
+	lea			($100,A1), A1
+	movea.l		#$EC2, A0
+	moveq		#0, D0
+	move.b		#5, D0
+	
+draw_qsound_ramok_loop2:
+	move.b		(A0)+, D1
+;	andi.b		#$FF, D1
+	move.b		D1, ($1,A1)
+	lea			($80,A1), A1
+	dbf			D0, draw_qsound_ramok_loop2
+	
+	rts
+	
+	

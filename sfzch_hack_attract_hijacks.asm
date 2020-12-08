@@ -10,14 +10,15 @@ jtl_hijack_attract_04:
 hijack_attract_04_00:
 	addq.w  #2, ($4,A5)
 	move.w  #$F0, ($6,A5) ; default #$F0
-;	moveq   #$0, D0
-;	lea     $90c000.l, A1
-;	jsr     $19EF2.l
-;	moveq   #$2e, D0	; 2e
-;	lea     $90c400.l, A1
-;	jsr     $19EF2.l
+	
+	moveq   #$2d, D0
+	lea     $90c000.l, A1
+	jsr     $19B3E.l
+	moveq   #$2e, D0	; 2e
+	lea     $90c400.l, A1
+	jsr     $19B3E.l
 
-	jsr		draw_qsound_logo
+;;;;	jsr		draw_qsound_logo
 
 	moveq   #$55, D0
 	jsr     $F1CA.l
@@ -80,19 +81,19 @@ hijack_attract_qsmusic:
 ; ================================
 ; ================================
 
-draw_qsound_logo:
-	
-	moveq	#0, D0
-	move.w	#$180, D0
-	movea.l	#qsound_logo, A0
-	movea.l #$90C000, A1
-	
-draw_qsound_logo_loop:
-	move.l (A0)+, (A1)+
-	dbf		D0, draw_qsound_logo_loop
-	
-	rts
-	
+;;;;draw_qsound_logo:
+;;;;	
+;;;;	moveq	#0, D0
+;;;;	move.w	#$180, D0
+;;;;	movea.l	#qsound_logo, A0
+;;;;	movea.l #$90C000, A1
+;;;;	
+;;;;draw_qsound_logo_loop:
+;;;;	move.l (A0)+, (A1)+
+;;;;	dbf		D0, draw_qsound_logo_loop
+;;;;	
+;;;;	rts
+;;;;	
 ; ================================
 ; ================================
 	
@@ -110,8 +111,8 @@ copy_qsound_logo_palette_loop:
 	
 ; ================================
 	
-qsound_logo:
- incbin "scroll2_qsoundlogo.bin"
+;;;;qsound_logo:
+;;;; incbin "scroll2_qsoundlogo.bin"
  
 qsound_logo_palette:
 ; incbin "palette_qsoundlogo.bin"
