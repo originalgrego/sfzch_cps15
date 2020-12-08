@@ -5485,6 +5485,8 @@
 012D94  move.w  #$17f, D0
 012D98  bra     $12d9e
 
+012D9A  move.w  ($10,A6), D0 ; Get player x pos
+
 012D9E  andi.w  #$1fe, D0
 012DA2  move.w  ($1e,PC,D0.w), D0
 012DA6  andi.l  #$ff00, D0

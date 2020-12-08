@@ -112,12 +112,12 @@ Hijack_More_init:
 
 ;----------------
 Hijack_Upload_Audio_Commands:
-  moveq   #$0, D0
+;  moveq   #$0, D0 ; Ignore stereo on sounds
   
 ;  tst.b   ($19a,A5)
 ;  beq     Hijack_Upload_Audio_Commands_Continue
 
-;  moveq   #-$1, D0
+  moveq   #-$1, D0 ; Handle stereo
   
 Hijack_Upload_Audio_Commands_Continue:
   move.b  D0, $F19ffd.l
@@ -197,9 +197,6 @@ Hijack_Add_Audio_Command_To_Fifo:
 	lsl.l   #$1, D1
 	move.w  tbl_sound_mappings(PC,D1.w), D1	
 	beq Hijack_Add_Audio_Command_To_Fifo_Exit
-
-	cmpi.w #$100, D1
-	blt	Hijack_Add_Audio_Command_To_Fifo_Exit
 
 	moveq   #$0, D2
 	moveq   #$0, D3
