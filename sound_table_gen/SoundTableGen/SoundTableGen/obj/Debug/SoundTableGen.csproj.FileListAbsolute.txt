@@ -1,0 +1,7 @@
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\bin\Debug\SoundTableGen.exe.config
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\bin\Debug\SoundTableGen.exe
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\bin\Debug\SoundTableGen.pdb
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\obj\Debug\SoundTableGen.csprojAssemblyReference.cache
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\obj\Debug\SoundTableGen.csproj.CoreCompileInputs.cache
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\obj\Debug\SoundTableGen.exe
+C:\Users\grego\Documents\sfzch_cps15\sound_table_gen\SoundTableGen\SoundTableGen\obj\Debug\SoundTableGen.pdb
