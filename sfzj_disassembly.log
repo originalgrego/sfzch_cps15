@@ -5476,9 +5476,14 @@
 012D86  sub.w   (A4), D0
 012D88  bge     $12d8e
 
+012D8A  moveq   #$0, D0
+012D8C  bra     $12d9e
+
 012D8E  cmpi.w  #$17f, D0
 012D92  bls     $12d9e
-012D9A  move.w  ($10,A6), D0 ; Get players xpos!
+
+012D94  move.w  #$17f, D0
+012D98  bra     $12d9e
 
 012D9E  andi.w  #$1fe, D0
 012DA2  move.w  ($1e,PC,D0.w), D0

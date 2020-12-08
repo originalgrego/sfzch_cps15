@@ -153,15 +153,63 @@ Hijack_Upload_Audio_Commands_Exit:
 ;----------------
 
 ;----------------
+Stereo_Calculation:
+	moveq   #$0, D0
+	move.b  ($9,A6), D0
+	beq     Stereo_Calculation_Cont2
+
+	subq.w  #4, D0
+	movea.l tbl_stereo_calc_table_1(PC,D0.w), A4
+	move.w  ($10,A6), D0 ; Get players xpos!
+	sub.w   (A4), D0
+	bge     Stereo_Calculation_Cont
+
+	moveq   #$0, D0
+	bra     Stereo_Calculation_Cont3
+
+Stereo_Calculation_Cont:
+	cmpi.w  #$17f, D0
+	bls     Stereo_Calculation_Cont3
+
+	move.w  #$17f, D0
+	bra     Stereo_Calculation_Cont3
+
+Stereo_Calculation_Cont2:
+	move.w  ($10,A6), D0 ; Get players xpos!
+
+Stereo_Calculation_Cont3:
+	andi.w  #$1fe, D0
+	move.w  tbl_stereo_calc_table_2(PC,D0.w), D0
+	andi.l  #$ff00, D0
+	andi.l  #$ff00ff, D2
+	or.l    D0, D2
+	rts
+;----------------
+
+tbl_stereo_calc_table_1:
+	incbin "stereo_calc_table_1.bin"
+
+tbl_stereo_calc_table_2:
+	incbin "stereo_calc_table_2.bin"
+
+;----------------
 Hijack_Add_Audio_Command_To_Fifo:
 	lsl.l   #$1, D1
 	move.w  tbl_sound_mappings(PC,D1.w), D1	
 	beq Hijack_Add_Audio_Command_To_Fifo_Exit
 
+	cmpi.w #$100, D1
+	blt	Hijack_Add_Audio_Command_To_Fifo_Exit
 
 	moveq   #$0, D2
 	moveq   #$0, D3
 
+	cmpi.w #$100, D1
+	blt	Hijack_Add_Audio_Command_To_Fifo_No_Stereo
+
+	bsr Stereo_Calculation
+
+Hijack_Add_Audio_Command_To_Fifo_No_Stereo
 	tst.b   ($199,A5)
 	bne     Hijack_Add_Audio_Command_To_Fifo_Continue
 
