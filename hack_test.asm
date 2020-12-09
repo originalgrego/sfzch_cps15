@@ -26,6 +26,122 @@ qsound_fifo_tail_offset = $6010
 ; org $179A
 ;	NOP
 
+	
+; ===========================
+;
+; 		REGION TEXT
+;
+;============================
+
+ ; Region and version text pointers changed to only draw our new version
+ org $C7C8
+	dc.w	$E0, $E0, $E0, $E0, $E0, $E0
+	
+ ; Region warning text pointers
+ org $C7D4
+	dc.w	$29C, $29C, $29C, $29C, $29C, $29C
+	
+
+
+; header: X Y Z
+; X = starting column
+; Y = starting row (row * 4)
+; Z = palette (in this case always 1)
+;
+; Strings are terminated by / character ($2F)
+;
+; Routine will continue drawing strings until terminated by word length zero instead of /
+
+
+; ##################
+; REGION AND VERSION
+; ##################
+
+ org $C8A8
+
+	dc.b	$05		; x
+	dc.b	$24		; y
+	dc.b	$01		; palette
+	dc.b	"S T R E E T   F I G H T E R   Z E R O/"
+	
+	dc.b	$12		; x
+	dc.b	$30		; y
+	dc.b	$01		; palette
+	dc.b	"2 0 1 2 0 8/"
+	
+	dc.b	$0B		; x
+	dc.b	$3C		; y
+	dc.b	$01		; palette
+	dc.b	"C P S  C H A N G E R  1 . 5"
+	
+	dc.w	$0		; end
+
+; ##############
+; REGION WARNING
+; ##############
+
+ org $CA64
+	
+	dc.b	$03
+	dc.b	$10
+	dc.b	$01
+	dc.b	"                WARNING/"
+	
+	dc.b	$03
+	dc.b	$20
+	dc.b	$01
+	dc.b	"This game has been unlawfully modified and/"
+ 	
+	dc.b	$03
+	dc.b	$28
+	dc.b	$01
+	dc.b	"is not permitted for use in any country or/"
+	 	
+	dc.b	$03
+	dc.b	$30
+	dc.b	$01
+	dc.b	"territory./"
+		 	
+	dc.b	$03
+	dc.b	$3C
+	dc.b	$01
+	dc.b	"Sales, export or operation of this game is/"
+			 	
+	dc.b	$03
+	dc.b	$44
+	dc.b	$01
+	dc.b	"unquestionably a criminal offense./"
+				 	
+	dc.b	$03
+	dc.b	$58
+	dc.b	$03
+	dc.b	"            INTERPOL NOTICE/"
+	
+	dc.b	$03
+	dc.b	$64
+	dc.b	$03
+	dc.b	"Be on the lookout for these individuals:/"
+
+	dc.b	$05
+	dc.b	$6C
+	dc.b	$02
+	dc.b	"grego2d/"
+	
+	dc.b	$13
+	dc.b	$6C
+	dc.b	$00
+	dc.b	" Rotwang/"
+	
+	dc.b	$22
+	dc.b	$6C
+	dc.b	$04
+	dc.b	" bdlou"
+
+	dc.w	$0
+ 
+; ==========================
+; ==========================
+
 ; Free space
  org $149A50
  
@@ -258,4 +374,4 @@ draw_qsound_ramok_loop2:
 	
 	rts
 	
-	
+
