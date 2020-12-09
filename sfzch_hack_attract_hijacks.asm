@@ -73,6 +73,12 @@ hijack_attract_qsmusic:
 	moveq   #$0, D2
 	moveq   #$0, D3
 	jsr     Hijack_Add_Audio_Command_To_Fifo
+
+	moveq   #$23, D1
+	moveq   #$0, D2
+	moveq   #$0, D3
+	jsr     Hijack_Add_Audio_Command_To_Fifo
+
 	moveq   #$23, D1
 	move.l  #$11000, D2
 	move.l  #$80, D3
