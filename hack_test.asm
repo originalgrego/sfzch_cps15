@@ -8,7 +8,7 @@ qsound_fifo_head_offset = $6000
 qsound_fifo_tail_offset = $6010
 
  org $0211C2
-	jmp Add_Audio_Command_To_Fifo_Continue
+	jmp Hijack_Sound_Test_Add_Audio
 
  org $000AA6
 	jmp Do_Qsound_Test
@@ -338,7 +338,17 @@ Hijack_Add_Audio_Command_To_Fifo_Not_End_Dizzy:
 Hijack_Add_Audio_Command_To_Fifo_Exit:
 	rts
 ;----------------
-	
+
+;----------------
+Hijack_Sound_Test_Add_Audio:
+	lsl.l   #$1, D1
+	move.w  tbl_sound_mappings(PC,D1.w), D1	
+
+	bsr Add_Audio_Command_To_Fifo_Continue
+
+	rts
+;----------------
+
 ;----------------
 Add_Audio_Command_To_Fifo:
 	cmpi.w #$100, D1
