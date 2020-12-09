@@ -7,6 +7,9 @@ qsound_fifo_offset = $7000
 qsound_fifo_head_offset = $6000
 qsound_fifo_tail_offset = $6010
 
+ org $0211C2
+	jmp Add_Audio_Command_To_Fifo_Continue
+
  org $000AA6
 	jmp Do_Qsound_Test
 
@@ -316,20 +319,41 @@ Hijack_Add_Audio_Command_To_Fifo:
 
 	moveq   #$0, D2
 	moveq   #$0, D3
+	
+	cmpi.w #$23d, D1
+	bne Hijack_Add_Audio_Command_To_Fifo_Not_End_Dizzy
 
+	move.l #$1e00, D2
+	bsr Add_Audio_Command_To_Fifo_No_Stereo
+
+	move.l #$13d, D1
+	bsr Add_Audio_Command_To_Fifo_No_Stereo
+	
+	bra Hijack_Add_Audio_Command_To_Fifo_Exit
+
+Hijack_Add_Audio_Command_To_Fifo_Not_End_Dizzy:
+
+	bsr Add_Audio_Command_To_Fifo
+
+Hijack_Add_Audio_Command_To_Fifo_Exit:
+	rts
+;----------------
+	
+;----------------
+Add_Audio_Command_To_Fifo:
 	cmpi.w #$100, D1
-	blt	Hijack_Add_Audio_Command_To_Fifo_No_Stereo
+	blt	Add_Audio_Command_To_Fifo_No_Stereo
 
 	bsr Stereo_Calculation
 
-Hijack_Add_Audio_Command_To_Fifo_No_Stereo
+Add_Audio_Command_To_Fifo_No_Stereo
 	tst.b   ($199,A5)
-	bne     Hijack_Add_Audio_Command_To_Fifo_Continue
+	bne     Add_Audio_Command_To_Fifo_Continue
 
 	tst.b   ($181,A5)
-	bne     Hijack_Add_Audio_Command_To_Fifo_Exit
+	bne     Add_Audio_Command_To_Fifo_Exit
 
-Hijack_Add_Audio_Command_To_Fifo_Continue:
+Add_Audio_Command_To_Fifo_Continue:
 	lea     (qsound_fifo_offset,A5), A4 ; Load fifo address
 	move.w  (qsound_fifo_tail_offset,A5), D0 ; Fifo tail
 	move.l  D1, (A4,D0.w)
@@ -339,7 +363,7 @@ Hijack_Add_Audio_Command_To_Fifo_Continue:
 	andi.w  #$ff0, D0
 	move.w  D0, (qsound_fifo_tail_offset,A5) ; Udate Fifo tail
 
-Hijack_Add_Audio_Command_To_Fifo_Exit:
+Add_Audio_Command_To_Fifo_Exit:
 	rts
 ;----------------
 
