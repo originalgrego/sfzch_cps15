@@ -7,6 +7,9 @@ qsound_fifo_offset = $7000
 qsound_fifo_head_offset = $6000
 qsound_fifo_tail_offset = $6010
 
+ org $0211C2
+	jmp Add_Audio_Command_To_Fifo_Continue
+
  org $000AA6
 	jmp Do_Qsound_Test
 
