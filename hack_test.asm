@@ -26,7 +26,7 @@ qsound_fifo_tail_offset = $6010
 	jmp Hijack_Add_Audio_Command_To_Fifo
 	
 ; service mode test
-; org $179A
+ org $179A
 ;	NOP
 
 	
@@ -151,7 +151,12 @@ qsound_fifo_tail_offset = $6010
  include "sfzch_hack_attract_hijacks.asm"
 
 ;----------------
+
 Do_Qsound_Test:
+	cmpi.l  #$5642194, D0
+	cmpi.b  #$77, $f19fff.l
+	bne     Do_Qsound_Test ; Wait loop
+
 	lea     $f18000.l, A0 ; QSound mem
 	lea     ($1ffe,A0), A1 ; Length
 	
@@ -209,8 +214,10 @@ Initialize_QSound_Fifo_Loop:
   move.l  D0, (A0)+
   move.l  D0, (A0)+
   dbra    D6, Initialize_QSound_Fifo_Loop
+ 
   move.l  D0, (qsound_fifo_tail_offset,A5) ; Clear fifo tail
-  move.l  D0, (qsound_fifo_head_offset,A5) ; Clear fifo tail
+  move.l  D0, (qsound_fifo_head_offset,A5) ; Clear fifo head
+
   rts
 ;----------------
 
@@ -349,6 +356,10 @@ Hijack_Sound_Test_Add_Audio:
 	rts
 ;----------------
 
+tbl_sound_mappings:
+	incbin "sound_mappings.bin"
+
+
 ;----------------
 Add_Audio_Command_To_Fifo:
 	cmpi.w #$100, D1
@@ -376,9 +387,6 @@ Add_Audio_Command_To_Fifo_Continue:
 Add_Audio_Command_To_Fifo_Exit:
 	rts
 ;----------------
-
-tbl_sound_mappings:
-	incbin "sound_mappings.bin"
 
 draw_qsound_ramok:
 	movea.l		#$9088D0, A1

@@ -99,9 +99,11 @@
 000B54  lea     ($6,PC) ; ($b5c), A5
 000B58  bra     $d8a
 
+; Wait for qsound to initialize
 000B5C  cmpi.l  #$5642194, D0
 000B62  cmpi.b  #$77, $619fff.l
 000B6A  bne     $b5c
+; Wait for qsound to initialize
 
 ; Test qsound
 000B6C  lea     $618000.l, A0
@@ -392,10 +394,12 @@
 00106C  cmpi.l  #$5642194, D0
 001072  jsr     $def0.l
 
+; More init
 001078  move.w  #$0, ($190,A5)
 00107E  move.b  #$88, $619ffb.l
 001086  move.b  #$0, $619ffd.l
 00108E  move.b  #$ff, $619fff.l
+; More init
 
 001096  cmpi.l  #$5642194, D0
 00109C  moveq   #$0, D0
@@ -5375,11 +5379,13 @@
 01233A  rts
 
 ; Upload audio commands
-012B3E  moveq   #$0, D0
-012B40  tst.b   ($19a,A5)
+012B3E  moveq   #$0, D0 ; Mono sound
+
+012B40  tst.b   ($19a,A5) ; Mono/stereo config
 012B44  beq     $12b48
 
-012B46  moveq   #-$1, D0
+012B46  moveq   #-$1, D0 ; Stereo sound
+
 012B48  move.b  D0, $619ffd.l
 012B4E  move.w  (-$49c0,A5), D0 ; Fifo head
 012B52  cmp.w   (-$49c2,A5), D0 ; Compare against fifo tail
@@ -5423,7 +5429,7 @@
 012BFE  move.l  D3, ($8,A4,D0.w)
 012C02  addi.w  #$10, D0
 012C06  andi.w  #$ff0, D0
-012C0A  move.w  D0, (-$49c2,A5) ; Udate Fifo tail
+012C0A  move.w  D0, (-$49c2,A5) ; Update Fifo tail
 012C0E  rts
 ; Put audio commands in fifo 
 
