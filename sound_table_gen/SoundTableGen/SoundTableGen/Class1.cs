@@ -13,40 +13,58 @@ namespace SoundTableGen
 
         static void Main(string[] args)
         {
-            ushort[] table = new ushort[0x300];
+            ushort[] table1 = new ushort[0x300];
+            ushort[] table2 = new ushort[0x300];
+
             String mappingText = File.ReadAllText(args[0]);
             String[] split = mappingText.Split(stringSeparators, StringSplitOptions.None);
             foreach (String splitString in split)
             {
                 String[] splitski = splitString.Split(' ');
+                int from = Convert.ToInt32(splitski[0], 16);
+                if (splitski.Length > 2)
+                {
+                    try
+                    {
+                        int to = Convert.ToInt32(splitski[2], 16);
+                        Console.WriteLine(from + " " + to);
+                        table2[from] = (ushort)to;
+                    }
+                    catch (System.FormatException exc)
+                    {
+                    }
+                }
                 if (splitski.Length > 1)
                 {
-                    int from = Convert.ToInt32(splitski[0], 16);
                     try { 
                         int to = Convert.ToInt32(splitski[1], 16);
                         Console.WriteLine(from + " " + to);
-                        table[from] = (ushort)to;
+                        table1[from] = (ushort)to;
                     }
                     catch (System.FormatException exc)
                     {
                     }
                 }
             }
-            for (int x = 0; x < 0x21; x ++)
+
+            for (int x = 0; x < 0x24; x ++)
             {
-                table[x] = (ushort)x;
+                table1[x] = (ushort)x;
             }
 
-            byte[] byteTable = new byte[0x600];
+
+            byte[] byteTable1 = new byte[0x600];
+            byte[] byteTable2 = new byte[0x600];
             for (int x = 0; x < 0x300; x ++)
             {
-                byteTable[x * 2 + 1] = (byte)(table[x] & 0xFF);
-                byteTable[x * 2] = (byte)((table[x] & 0xFF00) >> 8);
+                byteTable1[x * 2 + 1] = (byte)(table1[x] & 0xFF);
+                byteTable1[x * 2] = (byte)((table1[x] & 0xFF00) >> 8);
+                byteTable2[x * 2 + 1] = (byte)(table2[x] & 0xFF);
+                byteTable2[x * 2] = (byte)((table2[x] & 0xFF00) >> 8);
             }
 
-            File.WriteAllBytes("Output.bin", byteTable);
-
+            File.WriteAllBytes("sound_mappings.bin", byteTable1);
+            File.WriteAllBytes("secondary_sound_mappings.bin", byteTable2);
         }
-
     }
 }

@@ -6,6 +6,7 @@
 qsound_fifo_offset = $7000
 qsound_fifo_head_offset = $6000
 qsound_fifo_tail_offset = $6010
+temp = $6020
 
  org $0211C2
 	jmp Hijack_Sound_Test_Add_Audio
@@ -320,27 +321,18 @@ tbl_stereo_calc_table_2:
 
 ;----------------
 Hijack_Add_Audio_Command_To_Fifo:
+	move.l D1, (temp, A5)
+
 	lsl.l   #$1, D1
 	move.w  tbl_sound_mappings(PC,D1.w), D1	
 	beq Hijack_Add_Audio_Command_To_Fifo_Exit
 
 	moveq   #$0, D2
 	moveq   #$0, D3
-	
-	cmpi.w #$23d, D1
-	bne Hijack_Add_Audio_Command_To_Fifo_Not_End_Dizzy
 
-	move.l #$1e00, D2
 	bsr Add_Audio_Command_To_Fifo_No_Stereo
 
-	move.l #$13d, D1
-	bsr Add_Audio_Command_To_Fifo_No_Stereo
-	
-	bra Hijack_Add_Audio_Command_To_Fifo_Exit
-
-Hijack_Add_Audio_Command_To_Fifo_Not_End_Dizzy:
-
-	bsr Add_Audio_Command_To_Fifo
+	bsr Add_Secondary_Audio_Command
 
 Hijack_Add_Audio_Command_To_Fifo_Exit:
 	rts
@@ -359,6 +351,25 @@ Hijack_Sound_Test_Add_Audio:
 tbl_sound_mappings:
 	incbin "sound_mappings.bin"
 
+;----------------
+Add_Secondary_Audio_Command:
+	move.l (temp, A5), D1
+
+	lsl.l   #$1, D1
+	move.w  tbl_secondary_sound_mappings(PC,D1.w), D1	
+	beq Add_Secondary_Audio_Command_Exit
+
+	moveq   #$0, D2
+	moveq   #$0, D3
+
+	bsr Add_Audio_Command_To_Fifo_No_Stereo
+
+Add_Secondary_Audio_Command_Exit:
+	rts
+;----------------
+
+tbl_secondary_sound_mappings:
+	incbin "secondary_sound_mappings.bin"
 
 ;----------------
 Add_Audio_Command_To_Fifo:
