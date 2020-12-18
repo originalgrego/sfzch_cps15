@@ -71,7 +71,7 @@ temp = $6020
 	dc.b	$12		; x
 	dc.b	$30		; y
 	dc.b	$01		; palette
-	dc.b	"2 0 1 2 0 8/"
+	dc.b	"2 0 1 2 1 8/"
 	
 	dc.b	$0B		; x
 	dc.b	$3C		; y
@@ -330,7 +330,7 @@ Hijack_Add_Audio_Command_To_Fifo:
 	moveq   #$0, D2
 	moveq   #$0, D3
 
-	bsr Add_Audio_Command_To_Fifo_No_Stereo
+	bsr Add_Audio_Command_To_Fifo
 
 	bsr Add_Secondary_Audio_Command
 
@@ -362,7 +362,7 @@ Add_Secondary_Audio_Command:
 	moveq   #$0, D2
 	moveq   #$0, D3
 
-	bsr Add_Audio_Command_To_Fifo_No_Stereo
+	bsr Add_Audio_Command_To_Fifo
 
 Add_Secondary_Audio_Command_Exit:
 	rts
