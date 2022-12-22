@@ -1,13 +1,15 @@
-000990  move.w  #$0, $8040a0.l
+000990  move.w  #$0, $8040a0.l ; Unknown in mame
 000998  move.w  #$807d, $400002.l
-0009A0  move.w  #$1234, $400004.l
+0009A0  move.w  #$1234, $400004.l ; Layer priorities 
 0009A8  move.w  #$0, $400006.l
 0009B0  move.w  #$40, $400008.l
 0009B8  move.w  #$10, $40000a.l
-0009C0  move.w  #$f00, $804040.l
+0009C0  move.w  #$f00, $804040.l ; Eeprom
 0009C8  cmpi.l  #$5642194, D0
+
 0009CE  lea     ($6,PC) ; ($9d6), A4
 0009D2  bra     $e82
+
 0009D6  move.w  #$ffc0, $80010c.l
 0009DE  move.w  #$0, $80010e.l
 0009E6  move.w  #$9000, $800100.l
@@ -15,6 +17,7 @@
 0009F6  move.w  #$90c0, $800104.l
 0009FE  move.w  #$9100, $800106.l
 000A06  move.w  #$9160, $800108.l
+
 000A0E  lea     ($6,PC) ; ($a16), A4
 000A12  bra     $e26
 000A16  lea     ($6,PC) ; ($a1e), A4
@@ -23,10 +26,12 @@
 000A22  bra     $df0
 000A26  lea     ($6,PC) ; ($a2e), A4
 000A2A  bra     $e04
-000A2E  move.w  #$e, $800122.l
-000A36  move.w  #$6c2, $800166.l
-000A3E  move.w  #$3f, $800170.l
-000A46  move.w  #$9140, $80010a.l
+
+000A2E  move.w  #$e, $800122.l ; Video control
+000A36  move.w  #$6c2, $800166.l ; Ctrl
+000A3E  move.w  #$3f, $800170.l ; Pal ctrl
+000A46  move.w  #$9140, $80010a.l ; Palette base
+
 000A4E  lea     ($4cc,PC) ; ($f1c), A2
 000A52  lea     ($6,PC) ; ($a5a), A5
 000A56  bra     $d8a
@@ -134,13 +139,16 @@
 
 000BB6  cmpi.l  #$5642194, D0
 000BBC  moveq   #$0, D0
+
 000BBE  lea     $ff8000.l, A5
+
 000BC4  move.w  #$9000, $800100.l
 000BCC  move.w  #$9080, $800102.l
 000BD4  move.w  #$90c0, $800104.l
 000BDC  move.w  #$9100, $800106.l
 000BE4  move.w  #$9160, $800108.l
 000BEC  move.w  #$9140, $80010a.l
+
 000BF4  move.w  D0, $800110.l
 000BFA  move.w  D0, $800112.l
 000C00  move.w  D0, $800114.l
@@ -149,11 +157,13 @@
 000C12  move.w  #$f, $800122.l
 000C1A  move.w  #$6c2, $800166.l
 000C22  move.w  #$3f, $800170.l
+
 000C2A  move.w  #$7000, $400000.l
 000C32  move.w  #$807d, $400002.l
 000C3A  move.w  #$1234, $400004.l
 000C42  move.w  #$40, $400008.l
 000C4A  move.w  #$10, $40000a.l
+
 000C52  move.w  #$9000, ($1e,A5)
 000C58  move.w  #$9080, ($20,A5)
 000C5E  move.w  #$90c0, ($22,A5)
@@ -170,12 +180,14 @@
 000C92  move.w  #$f, ($38,A5)
 000C98  move.w  #$6c2, ($3a,A5)
 000C9E  move.w  #$3f, ($44,A5)
+
 000CA4  move.w  #$7000, ($46,A5)
 000CAA  move.w  #$807d, ($48,A5)
 000CB0  move.w  #$1234, ($4a,A5)
 000CB6  move.w  #$40, ($4c,A5)
 000CBC  move.w  #$10, ($4e,A5)
-000CC2  move.w  #$f08, $804040.l
+
+000CC2  move.w  #$f08, $804040.l ; Eeprom
 000CCA  move.w  #$f00, ($62,A5)
 000CD0  move.b  #$8, ($189,A5)
 000CD6  move.w  #$9080, ($2f50,A5)
@@ -289,6 +301,7 @@
 000E3A  cmpi.l  #$5642194, D0
 000E40  move.l  D0, (A0)+
 000E42  dbra    D7, $e3a
+
 000E46  move.w  #$1, $8040e0.l
 000E4E  lea     $708000.l, A0
 000E54  move.w  #$7ff, D7
@@ -372,7 +385,8 @@
 001008  move.l  D1, (A0)+
 00100A  move.l  D1, (A0)+
 00100C  dbra    D0, $1002
-001010  jsr     $12c10.l
+001010  jsr     $12c10.l  ; Initialize audio fifo
+
 001016  cmpi.l  #$5642194, D0
 00101C  jsr     $10fa2.l
 001022  cmpi.l  #$5642194, D0
@@ -479,14 +493,19 @@
 0011EA  lea     $ff8000.l, A5
 0011F0  bsr     $12e6
 0011F4  move.w  ($1e,A5), $800100.l
+
 0011FC  move.w  ($2f50,A5), $800102.l
 001204  move.w  ($20,A5), ($2f50,A5)
+
 00120A  move.w  ($2f52,A5), $800104.l
 001212  move.w  ($22,A5), ($2f52,A5)
+
 001218  move.w  ($2f54,A5), $800106.l
 001220  move.w  ($24,A5), ($2f54,A5)
+
 001226  move.w  ($2f58,A5), $800108.l
 00122E  move.w  ($26,A5), ($2f58,A5)
+
 001234  move.w  ($46,A5), $400000.l
 00123C  move.w  ($4a,A5), $400004.l
 001244  move.w  ($4c,A5), $400008.l

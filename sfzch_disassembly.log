@@ -9,10 +9,12 @@
 000968  nop
 00096A  nop
 00096C  nop
-00096E  move.b  #$0, $800030.l
+00096E  move.b  #$0, $800030.l ; Coin control
 000976  cmpi.l  #$5642194, D0
+
 00097C  lea     ($6,PC) ; ($984), A4
 000980  bra     $d82
+
 000984  move.w  #$ffc0, $80010c.l
 00098C  move.w  #$0, $80010e.l
 000994  move.w  #$9000, $800100.l
@@ -20,6 +22,7 @@
 0009A4  move.w  #$90c0, $800104.l
 0009AC  move.w  #$9100, $800106.l
 0009B4  move.w  #$9160, $800108.l
+
 0009BC  lea     ($6,PC) ; ($9c4), A4
 0009C0  bra     $d4c
 0009C4  lea     ($6,PC) ; ($9cc), A4
@@ -28,10 +31,12 @@
 0009D0  bra     $d16
 0009D4  lea     ($6,PC) ; ($9dc), A4
 0009D8  bra     $d2a
-0009DC  move.w  #$e, $800122.l
-0009E4  move.w  #$6c2, $800166.l
-0009EC  move.w  #$3f, $800170.l
-0009F4  move.w  #$9140, $80010a.l
+
+0009DC  move.w  #$e, $800122.l ; video control
+0009E4  move.w  #$6c2, $800166.l ; Ctrl
+0009EC  move.w  #$3f, $800170.l ; Pal ctrl
+0009F4  move.w  #$9140, $80010a.l ; Palette base
+
 0009FC  move.w  #$4000, D0
 000A00  dbra    D0, $a00
 000A04  lea     ($416,PC) ; ($e1c), A2
@@ -272,6 +277,7 @@
 000DDE  lea     ($6,PC) ; ($de6), A2
 000DE2  bra     $de8
 000DE6  jmp     (A4)
+
 000DE8  moveq   #$1f, D7
 000DEA  move.l  #$f000f000, D0
 000DF0  cmpi.l  #$5642194, D0
